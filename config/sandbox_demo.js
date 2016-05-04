@@ -9,8 +9,8 @@ module.exports = {
         }
       }
     },
-    timelineMongodbWrapper: {
-      mongodb: {
+    timelineMongooseWrapper: {
+      mongoose: {
         connection_options: {
           host: '127.0.0.1',
           port: '27017',
@@ -24,6 +24,8 @@ module.exports = {
       i18n: {
         autoReload: true
       }
+    },
+    appTimeline: {
     }
   }
 };

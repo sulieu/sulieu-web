@@ -1,12 +1,22 @@
 {
-	"HISTORICAL TIMELINE": "SỬ LIỆU",
+	"HISTORICAL TIMELINE": "TRANG SỬ VIỆT",
+	"Menu Title": "TRANG SỬ VIỆT",
+	"Menu Close": "Đóng",
 	"Historical Periods": "Thời kỳ lịch sử",
 	"Historical Period": "Thời kỳ",
 	"Historical Facts": "Sự kiện lịch sử",
-	"Historical Fact": "Historical Fact",
+	"Historical Fact": "Sự kiện",
 	"Historical Figures": "Nhân vật lịch sử",
+	"Historical Figure": "Nhân vật",
 	"Browse all periods": "Xem tất cả thời kỳ lịch sử",
 	"Browse all facts": "Xem tất cả sự kiện lịch sử",
 	"Browse all figures": "Xem tất cả nhân vật lịch sử",
-	"Historical Figure": "Historical Figure"
+	"Homepage": "Trang chính",
+	"Disclaimer": "Phủ nhận chung",
+	"About Us": "Về chúng tôi",
+	"Marginal Information": "Marginal Information",
+	"Overview": "Tóm lược",
+	"Introduction": "Giới thiệu",
+	"History Timeline": "Theo dòng lịch sử",
+	"Statistics": "Thống kê"
 }

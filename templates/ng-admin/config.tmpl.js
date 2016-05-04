@@ -56,10 +56,146 @@
                 if (headers['content-range']) {
                     response.totalCount = headers['content-range'].split('/').pop();
                 }
+                if (headers['total-count']) {
+                    response.totalCount = headers['total-count'];
+                }
             }
 
             return data;
         });
+    }]);
+
+    app.config(['$translateProvider', function ($translateProvider) {
+        $translateProvider.translations('vi', {
+            'BACK': 'Quay lại',
+            'DELETE': 'Xóa',
+            'CREATE': 'Tạo mới',
+            'EDIT': 'Sửa',
+            'EXPORT': 'Kết xuất',
+            'ADD_FILTER': 'Lọc',
+            'SEE_RELATED': 'Xem tất cả {{ entityName }}',
+            'LIST': 'Danh sách',
+            'SHOW': 'Xem',
+            'SAVE': 'Lưu',
+            'N_SELECTED': '{{ length }} phần tử được chọn',
+            'ARE_YOU_SURE': 'Xác nhận chắc chắn đồng ý ?',
+            'YES': 'Có',
+            'NO': 'Không',
+            'FILTER_VALUES': 'Giá trị lọc',
+            'CLOSE': 'Đóng',
+            'CLEAR': 'Dọn sạch',
+            'CURRENT': 'Hiện hành',
+            'REMOVE': 'Loại bỏ',
+            'ADD_NEW': 'Thêm mới {{ name }}',
+            'BROWSE': 'Duyệt chọn',
+            'N_COMPLETE': 'Hoàn thành {{ progress }}%',
+            'CREATE_NEW': 'Tạo mới',
+            'SUBMIT': 'Gửi trình',
+            'SAVE_CHANGES': 'Lưu thay đổi',
+            'BATCH_DELETE_SUCCESS': 'Xóa cả cụm thành công',
+            'DELETE_SUCCESS': 'Xóa thành công',
+            'ERROR_MESSAGE': 'Lỗi phát sinh (code: {{ status }})',
+            'INVALID_FORM': 'Mẫu biểu (form) không hợp lệ',
+            'CREATION_SUCCESS': 'Tạo thành công',
+            'EDITION_SUCCESS': 'Sửa thành công',
+            'ACTIONS': 'Chức năng',
+            'PAGINATION': '<strong>{{ begin }}</strong> - <strong>{{ end }}</strong> trong <strong>{{ total }}</strong>',
+            'NO_PAGINATION': 'Aucun résultat',
+            'PREVIOUS': '« Trước',
+            'NEXT': 'Sau »',
+            'DETAIL': 'Chi tiết',
+            'STATE_CHANGE_ERROR': 'Erreur de routage: {{ message }}',
+            'NOT_FOUND': 'Không tìm thấy',
+            'NOT_FOUND_DETAILS': 'Không tìm thấy trang mong muốn. Vui lòng thử lại sau một vài giây.',
+            'Historical periods': 'Thời kỳ lịch sử',
+            'Historical events': 'Dấu mốc lịch sử',
+            'Historical facts': 'Sự kiện lịch sử',
+            'Historical figures': 'Nhân vật lịch sử',
+            "Entities": {
+                "periods": {
+                    "forms": {
+                        "list": {
+                            "title": 'Danh sách thời kỳ lịch sử'
+                        },
+                        "show": {
+                            "title": "Chi tiết thời kỳ: {{name}}"
+                        },
+                        "creation": {
+                            "title": 'Tạo thời kỳ lịch sử mới'
+                        },
+                        "edition": {
+                            "title": 'Sửa thời kỳ: {{name}}'
+                        },
+                        "deletion": {
+                            "title": 'Xóa thời kỳ: {{name}}'
+                        }
+                    },
+                    "fields": {
+                        "title": "Tieu de",
+                        "description": "Mo ta"
+                    }
+                },
+                "events": {
+                    "forms": {
+                        "list": {
+                            "title": 'Danh sách dấu mốc lịch sử'
+                        },
+                        "show": {
+                            "title": "Chi tiết dấu mốc: {{name}}"
+                        },
+                        "creation": {
+                            "title": 'Tạo dấu mốc lịch sử mới'
+                        },
+                        "edition": {
+                            "title": 'Sửa dấu mốc: {{name}}'
+                        },
+                        "deletion": {
+                            "title": 'Xóa dấu mốc: {{name}}'
+                        }
+                    }
+                },
+                "facts": {
+                    "forms": {
+                        "list": {
+                            "title": 'Danh sách sự kiện lịch sử'
+                        },
+                        "show": {
+                            "title": "Chi tiết sự kiện: {{name}}"
+                        },
+                        "creation": {
+                            "title": 'Tạo sự kiện lịch sử mới'
+                        },
+                        "edition": {
+                            "title": 'Sửa sự kiện: {{name}}'
+                        },
+                        "deletion": {
+                            "title": 'Xóa sự kiện: {{name}}'
+                        }
+                    }
+                },
+                "figures": {
+                    "forms": {
+                        "list": {
+                            "title": 'Danh sách nhân vật lịch sử'
+                        },
+                        "show": {
+                            "title": "Chi tiết nhân vật: {{name}}"
+                        },
+                        "creation": {
+                            "title": 'Tạo nhân vật lịch sử mới'
+                        },
+                        "edition": {
+                            "title": 'Sửa nhân vật: {{name}}'
+                        },
+                        "deletion": {
+                            "title": 'Xóa nhân vật: {{name}}'
+                        }
+                    }
+                }
+            }
+        });
+
+        $translateProvider.preferredLanguage('vi');
     }]);
 
     // Admin definition
@@ -76,54 +212,346 @@
 
         var admin = nga.application("Suviet Dashboard") // application main title
             .debug(true) // debug disabled
-            .baseApiUrl('http://localhost:7979/dong-thoi-gian/rest/'); // main API endpoint
+            .baseApiUrl('/dong-thoi-gian/rest/'); // main API endpoint
 
         // define all entities at the top to allow references between them
-        var period = nga.entity('periods')
-                .identifier(nga.field('_id')); // the API endpoint for periods will be http://localhost:3000/periods/:id
+        var entityPeriod = nga.entity('periods')
+                .identifier(nga.field('_id'));
+
+        var entityEvent = nga.entity('events')
+                .identifier(nga.field('_id'));
+
+        var entityFact = nga.entity('facts')
+                .identifier(nga.field('_id'));
+
+        var entityFigure = nga.entity('figures')
+                .identifier(nga.field('_id'));
 
         // set the application entities
         admin
-            .addEntity(period);
+            .addEntity(entityPeriod)
+            .addEntity(entityEvent)
+            .addEntity(entityFact)
+            .addEntity(entityFigure);
 
         // customize entities and views
 
         /*****************************
          * period entity customization *
          *****************************/
-        period.listView()
-            .title('Periods') // default title is "[Entity_name] list"
-            .description('List of periods with infinite pagination') // description appears under the title
-            .infinitePagination(true) // load pages as the user scrolls
+        entityPeriod.listView()
+            .title('{{ "Entities.periods.forms.list.title" | translate }}')
+            .infinitePagination(true)
             .fields([
-                nga.field('_id').label('ID'), // The default displayed name is the camelCase field name. label() overrides id
-                nga.field('title'), // the default list field type is "string", and displays as a string
-                nga.field('description')
+                nga.field('i', 'template')
+                    .label('')
+                    .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/200/150"></div>'),
+                nga.field('title'),
+                nga.field('period'),
+                nga.field('description', 'wysiwyg')
+            ])
+            .perPage(10)
+            .sortField('start_year')
+            .sortDir('asc')
+            .filters([
+                nga.field('q')
+                    .label('Filter by title')
             ])
             .listActions(['show', 'edit', 'delete'])
             .entryCssClasses(function(entry) { // set row class according to entry
                 return (entry.views > 300) ? 'is-popular' : '';
             });
 
-        period.creationView()
+        entityPeriod.creationView()
+            .title('{{ "Entities.periods.forms.creation.title" | translate }}')
             .fields([
-                nga.field('title') // the default edit field type is "string", and displays as a text input
-                    .attributes({ placeholder: 'the period title' }) // you can add custom attributes, too
-                    .validation({ required: true, minlength: 3, maxlength: 100 }), // add validation rules for fields
+                nga.field('title')
+                    .attributes({ placeholder: 'the period title' })
+                    .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('description', 'wysiwyg'),
+                nga.field('slug')
+                    .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('start_year', 'number')
+                    .validation({ required: true }),
+                nga.field('end_year', 'number')
+                    .validation({ required: true }),
+                nga.field('period'),
+                nga.field('picture', 'file')
+                    .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
             ]);
 
-        period.editionView()
-            .title('Edit period "{{ entry.values.title }}"') // title() accepts a template string, which has access to the entry
-            .actions(['list', 'show', 'delete']) // choose which buttons appear in the top action bar. Show is disabled by default
+        entityPeriod.editionView()
+            .title('{{ "Entities.periods.forms.edition.title" | translate: {name: entry.values.title} }}')
+            .actions(['list', 'show', 'delete'])
             .fields([
-                period.creationView().fields() // fields() without arguments returns the list of fields. That way you can reuse fields from another view to avoid repetition
+                entityPeriod.creationView().fields()
             ]);
 
-        period.showView() // a showView displays one entry in full page - allows to display more data than in a a list
+        entityPeriod.showView()
+            .title('{{ "Entities.periods.forms.show.title" | translate: {name: entry.values.title} }}')
             .fields([
-                nga.field('id'),
                 nga.field('title'),
+                nga.field('description'),
+                nga.field('slug'),
+                nga.field('period'),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
             ]);
+
+        entityPeriod.deletionView()
+            .title('{{ "Entities.periods.forms.deletion.title" | translate: {name: entry.values.title} }}');
+
+        /*****************************
+         * event entity customization *
+         *****************************/
+        entityEvent.listView()
+            .title('{{ "Entities.events.forms.list.title" | translate }}')
+            .infinitePagination(true)
+            .fields([
+                nga.field('image', 'template')
+                .label('')
+                .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/200/150"></div>'),
+                nga.field('headline'),
+                nga.field('text', 'wysiwyg')
+            ])
+            .filters([
+                nga.field('q')
+                    .label('Filter by title')
+            ])
+            .listActions(['show', 'edit', 'delete'])
+            .entryCssClasses(function(entry) { // set row class according to entry
+                return (entry.views > 300) ? 'is-popular' : '';
+            });
+
+        entityEvent.creationView()
+            .title('{{ "Entities.events.forms.creation.title" | translate }}')
+            .fields([
+                nga.field('headline')
+                    .attributes({ placeholder: 'the event headline' })
+                    .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('text', 'wysiwyg'),
+                nga.field('start_date')
+                    .validation({ required: true, minlength: 1 }),
+                nga.field('end_date'),
+                nga.field('display_date'),
+                nga.field('image', 'file')
+                    .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">')
+            ]);
+
+        entityEvent.editionView()
+            .title('{{ "Entities.events.forms.edition.title" | translate: {name: entry.values.headline} }}')
+            .actions(['list', 'show', 'delete'])
+            .fields([
+                entityEvent.creationView().fields()
+            ]);
+
+        entityEvent.showView()
+            .title('{{ "Entities.events.forms.show.title" | translate: {name: entry.values.headline} }}')
+            .fields([
+                nga.field('headline'),
+                nga.field('text', 'wysiwyg'),
+                nga.field('start_date'),
+                nga.field('end_date'),
+                nga.field('display_date'),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">')
+            ]);
+
+        entityEvent.deletionView()
+            .title('{{ "Entities.events.forms.deletion.title" | translate: {name: entry.values.headline} }}');
+
+        /*****************************
+         * fact entity customization *
+         *****************************/
+        entityFact.listView()
+            .title('{{ "Entities.facts.forms.list.title" | translate }}')
+            .infinitePagination(true)
+            .fields([
+                nga.field('i', 'template')
+                    .label('')
+                    .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture}}/200/150"></div>'),
+                nga.field('name'),
+                nga.field('description', 'wysiwyg'),
+                nga.field('periodId', 'reference')
+                    .label('Period')
+                    .targetEntity(admin.getEntity('periods'))
+                    .targetField(nga.field('title'))
+            ])
+            .filters([
+                nga.field('name')
+                    .label('Filter by name'),
+                nga.field('periodId', 'reference')
+                    .label('Filter by Period')
+                    .targetEntity(entityPeriod)
+                    .targetField(nga.field('title'))
+                    .remoteComplete(true, {
+                        refreshDelay: 200,
+                        searchQuery: function(search) { return { q: search }; }
+                    })
+            ])
+            .listActions(['show', 'edit', 'delete'])
+            .entryCssClasses(function(entry) { // set row class according to entry
+                return (entry.views > 300) ? 'is-popular' : '';
+            });
+
+        entityFact.creationView()
+            .title('{{ "Entities.facts.forms.creation.title" | translate }}')
+            .fields([
+                nga.field('name')
+                    .attributes({ placeholder: 'the fact name' })
+                    .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('description', 'wysiwyg'),
+                nga.field('slug')
+                    .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('periodId', 'reference')
+                    .label('Period')
+                    .targetEntity(admin.getEntity('periods'))
+                    .targetField(nga.field('title'))
+                    .validation({required: true })
+                    .cssClasses('col-sm-4'),
+                nga.field('events', 'reference_many')
+                    .targetEntity(entityEvent)
+                    .targetField(nga.field('headline'))
+                    .attributes({ placeholder: 'Select some events ...' })
+                    .remoteComplete(true, {
+                        refreshDelay: 300,
+                        searchQuery: function(search) { return { q: search }; }
+                    })
+                    .singleApiCall(ids => { return {'id': ids }; }),
+                nga.field('picture', 'file')
+                    .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+            ]);
+
+        entityFact.editionView()
+            .title('{{ "Entities.facts.forms.edition.title" | translate: {name: entry.values.name} }}')
+            .actions(['list', 'show', 'delete'])
+            .fields([
+                entityFact.creationView().fields()
+            ]);
+
+        entityFact.showView()
+            .title('{{ "Entities.facts.forms.edition.title" | translate: {name: entry.values.name} }}')
+            .fields([
+                nga.field('name'),
+                nga.field('description'),
+                nga.field('slug'),
+                nga.field('periodId', 'reference')
+                    .label('Period')
+                    .targetEntity(admin.getEntity('periods'))
+                    .targetField(nga.field('title'))
+                    .editable(false),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+            ]);
+
+        entityFact.deletionView()
+            .title('{{ "Entities.facts.forms.deletion.title" | translate: {name: entry.values.name} }}');
+
+        /*****************************
+         * figure entity customization *
+         *****************************/
+        entityFigure.listView()
+            .title('{{ "Entities.figures.forms.list.title" | translate }}')
+            .infinitePagination(true)
+            .fields([
+                nga.field('i', 'template')
+                    .label('')
+                    .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture}}/200/150"></div>'),
+                nga.field('name'),
+                nga.field('description', 'wysiwyg'),
+                nga.field('periodId', 'reference')
+                    .label('Period')
+                    .targetEntity(admin.getEntity('periods'))
+                    .targetField(nga.field('title'))
+            ])
+            .filters([
+                nga.field('name')
+                    .label('Filter by name'),
+                nga.field('periodId', 'reference')
+                    .label('Filter by Period')
+                    .targetEntity(entityPeriod)
+                    .targetField(nga.field('title'))
+                    .remoteComplete(true, {
+                        refreshDelay: 200,
+                        searchQuery: function(search) { return { q: search }; }
+                    })
+            ])
+            .listActions(['show', 'edit', 'delete'])
+            .entryCssClasses(function(entry) { // set row class according to entry
+                return (entry.views > 300) ? 'is-popular' : '';
+            });
+
+        entityFigure.creationView()
+            .title('{{ "Entities.figures.forms.creation.title" | translate }}')
+            .fields([
+                nga.field('name')
+                    .attributes({ placeholder: 'the figure name' })
+                    .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('description', 'wysiwyg'),
+                nga.field('slug')
+                    .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('periodId', 'reference')
+                    .label('Period')
+                    .targetEntity(admin.getEntity('periods'))
+                    .targetField(nga.field('title'))
+                    .validation({required: true })
+                    .cssClasses('col-sm-4'),
+                nga.field('events', 'reference_many')
+                    .targetEntity(entityEvent)
+                    .targetField(nga.field('headline'))
+                    .attributes({ placeholder: 'Select some events ...' })
+                    .remoteComplete(true, {
+                        refreshDelay: 300,
+                        searchQuery: function(search) { return { q: search }; }
+                    })
+                    .singleApiCall(ids => { return {'id': ids }; }),
+                nga.field('picture', 'file')
+                    .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+            ]);
+
+        entityFigure.editionView()
+            .title('{{ "Entities.figures.forms.edition.title" | translate: {name: entry.values.name} }}')
+            .actions(['list', 'show', 'delete'])
+            .fields([
+                entityFigure.creationView().fields()
+            ]);
+
+        entityFigure.showView() // a showView displays one entry in full page - allows to display more data than in a a list
+            .title('{{ "Entities.figures.forms.show.title" | translate: {name: entry.values.name} }}')
+            .fields([
+                nga.field('name'),
+                nga.field('description'),
+                nga.field('slug'),
+                nga.field('periodId', 'reference')
+                    .label('Period')
+                    .targetEntity(admin.getEntity('periods'))
+                    .targetField(nga.field('title'))
+                    .editable(false),
+                nga.field('events', 'reference_many')
+                    .targetEntity(entityEvent)
+                    .targetField(nga.field('headline')),
+                nga.field('preview', 'template')
+                    .label('')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+            ]);
+
+        entityFigure.deletionView()
+            .title('{{ "Entities.figures.forms.deletion.title" | translate: {name: entry.values.name} }}');
 
         // customize header
         var customHeaderTemplate =
@@ -133,16 +561,44 @@
               '<span class="icon-bar"></span>' +
               '<span class="icon-bar"></span>' +
             '</button>' +
-            '<a class="navbar-brand" href="#" ng-click="appController.displayHome()">ng-admin backend demo</a>' +
+            '<a class="navbar-brand" href="#" ng-click="appController.displayHome()">{{ "SUVIET.NET Dashboard" | translate }}</a>' +
         '</div>' +
         '<p class="navbar-text navbar-right hidden-xs">' +
-            '<a href="https://github.com/marmelab/ng-admin/blob/master/examples/blog/config.js"><span class="glyphicon glyphicon-sunglasses"></span>&nbsp;View Source</a>' +
+            '<a href="https://github.com/suviet/suviet-web.git"><span class="glyphicon glyphicon-sunglasses"></span>&nbsp;View Source</a>' +
         '</p>';
         admin.header(customHeaderTemplate);
 
+        var customMenuTemplate = 
+        '<div class="sidebar-nav navbar-collapse collapse" uib-collapse="$parent.isCollapsed">' +
+            '<ul class="nav" id="side-menu">' +
+                '<li class="entities-repeat" ng-repeat="(key, menu) in ::menu.children()" data-menu-id="{{ ::menu.uuid }}" compile="menu.template()">' +
+                    '<a ng-if="::menu.hasChild()" ng-click="toggleMenu(menu)" ng-class="::{\'active\': menu.isActive(path)}">' +
+                        '<span compile="::menu.icon()"><span class="glyphicon glyphicon-list"></span></span>' +
+                        '{{ menu.title() | translate }}' +
+                        '<span class="glyphicon arrow" ng-class="::{\'glyphicon-menu-down\': isOpen(menu), \'glyphicon-menu-right\': !isOpen(menu) }"></span>' +
+                    '</a>' +
+                    '<a ng-if="::!menu.hasChild()" href="#{{ menu.link() }}" ng-click="activateLink(menu)" ng-class="::{\'active\': menu.isActive(path)}">' +
+                        '<span compile="::menu.icon()"><span class="glyphicon glyphicon-list"></span></span>' +
+                        '{{ menu.title() | translate }}' +
+                    '</a>' +
+                    '<ul ng-if="::menu.hasChild()" class="nav nav-second-level collapsible" ng-class="::{\'collapsed\': !isOpen(menu) }">' +
+                        '<li ng-repeat="menu in ::menu.children()" data-menu-id="{{ ::menu.uuid }}" compile="menu.template()">' +
+                            '<a href="#{{menu.link()}}" ng-click="activateLink(menu)" ng-class="::{\'active\': menu.isActive(path)}">' +
+                                '<span compile="::menu.icon()"><span class="glyphicon glyphicon-list"></span></span>' +
+                                '{{ menu.title() | translate }}' +
+                            '</a>' +
+                        '</li>' +
+                    '</ul>' +
+                '</li>' +
+            '</ul>' +
+        '</div>'
+
         // customize menu
-        admin.menu(nga.menu()
-            .addChild(nga.menu(period).icon('<span class="glyphicon glyphicon-file"></span>')) // customize the entity menu icon
+        admin.menu(nga.menu().template(customMenuTemplate)
+            .addChild(nga.menu(entityPeriod).title('Historical periods').icon('<span class="glyphicon glyphicon-file"></span>'))
+            .addChild(nga.menu(entityEvent).title('Historical events').icon('<span class="glyphicon glyphicon-file"></span>'))
+            .addChild(nga.menu(entityFact).title('Historical facts').icon('<span class="glyphicon glyphicon-file"></span>'))
+            .addChild(nga.menu(entityFigure).title('Historical figures').icon('<span class="glyphicon glyphicon-file"></span>'))
         );
 
         nga.configure(admin);

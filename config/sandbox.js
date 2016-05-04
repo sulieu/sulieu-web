@@ -64,7 +64,8 @@ module.exports = {
     },
     appFilestore: {
       contextPath: '/filestore',
-      uploadDir: __dirname + '/../data/filestore/tmp'
+      uploadDir: __dirname + '/../data/filestore/origin',
+      thumbnailDir: __dirname + '/../data/filestore/tmp'
     },
     appLocalization: {
       i18n: {

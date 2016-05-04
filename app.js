@@ -3,9 +3,8 @@
 var app = require('devebot').launchApplication({
   appRootPath: __dirname
 }, [
-  //'app-armor', 
+  'app-armor', 
   'app-databoard', 
-  'app-datastore', 
   'app-filestore', 
   'app-localization', 
   'app-timeline', 
