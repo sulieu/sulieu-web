@@ -1,21 +1,3 @@
-/*global angular*/
-
-/*
- * This is an example ng-admin configuration for a blog administration composed
- * of three entities: period, comment, and tag. Reading the code and the comments
- * will help you understand how a typical ng-admin application works. You can
- * browse the result online at http://ng-admin.marmelab.com.
- *
- * The remote REST API is simulated in the browser, using FakeRest
- * (https://github.com/marmelab/FakeRest). Look at the JSON responses in the
- * browser console to see the data used by ng-admin.
- *
- * For simplicity's sake, the entire configuration is written in a single file,
- * but in a real world situation, you would probably split that configuration
- * into one file per entity. For another example configuration on a larger set
- * of entities, and using the best development practices, check out the
- * Posters Galore demo (http://marmelab.com/ng-admin-demo/).
- */
 (function () {
     "use strict";
 
@@ -107,10 +89,13 @@
             'STATE_CHANGE_ERROR': 'Erreur de routage: {{ message }}',
             'NOT_FOUND': 'Không tìm thấy',
             'NOT_FOUND_DETAILS': 'Không tìm thấy trang mong muốn. Vui lòng thử lại sau một vài giây.',
+            'Dashboard': 'Bảng điều khiển',
+            "Historical documents": "Tư liệu lịch sử",
             'Historical periods': 'Thời kỳ lịch sử',
             'Historical events': 'Dấu mốc lịch sử',
             'Historical facts': 'Sự kiện lịch sử',
             'Historical figures': 'Nhân vật lịch sử',
+            'Configuration': 'Thiết lập cấu hình',
             "Entities": {
                 "periods": {
                     "forms": {
@@ -198,6 +183,120 @@
         $translateProvider.preferredLanguage('vi');
     }]);
 
+    app.directive('dashboardSummary', ['Restangular', function(Restangular) {
+        'use strict';
+        return {
+            restrict: 'E',
+            scope: {},
+            controller: ['$scope', function($scope) {
+                var fields = ['periods', 'events', 'facts', 'figures'];
+                $scope.stats = {};
+                fields.forEach(function(field) {
+                    $scope.stats[field] = 0;
+                });
+                Restangular.one('documents', 'stats')
+                    .get()
+                    .then(result => {
+                        var data = result.data;
+                        fields.forEach(field => {
+                            $scope.stats[field] = data[field];         
+                        })
+                    });
+            }],
+            template: `<div class="row">
+    <div class="col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-sitemap fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ stats.periods | number:0 }}</div>
+                        <div>Thời kỳ</div>
+                    </div>
+                </div>
+            </div>
+            <a ui-sref="list({entity:'periods'})">
+                <div class="panel-footer">
+                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tags fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ stats.events | number:0 }}</div>
+                        <div>Dấu mốc</div>
+                    </div>
+                </div>
+            </div>
+            <a ui-sref="list({entity:'events'})">
+                <div class="panel-footer">
+                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-photo fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ stats.facts | number:0 }}</div>
+                        <div>Sự kiện</div>
+                    </div>
+                </div>
+            </div>
+            <a ui-sref="list({entity:'facts'})">
+                <div class="panel-footer">
+                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ stats.figures | number:0 }}</div>
+                        <div>Nhân vật</div>
+                    </div>
+                </div>
+            </div>
+            <a ui-sref="list({entity:'figures'})">
+                <div class="panel-footer">
+                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>`
+        };
+    }]);
+
     // Admin definition
     app.config(['NgAdminConfigurationProvider', function (NgAdminConfigurationProvider) {
         var nga = NgAdminConfigurationProvider;
@@ -227,7 +326,6 @@
         var entityFigure = nga.entity('figures')
                 .identifier(nga.field('_id'));
 
-        // set the application entities
         admin
             .addEntity(entityPeriod)
             .addEntity(entityEvent)
@@ -323,7 +421,7 @@
                     .label('Filter by title')
             ])
             .listActions(['show', 'edit', 'delete'])
-            .entryCssClasses(function(entry) { // set row class according to entry
+            .entryCssClasses(function(entry) {
                 return (entry.views > 300) ? 'is-popular' : '';
             });
 
@@ -595,10 +693,102 @@
 
         // customize menu
         admin.menu(nga.menu().template(customMenuTemplate)
-            .addChild(nga.menu(entityPeriod).title('Historical periods').icon('<span class="glyphicon glyphicon-file"></span>'))
-            .addChild(nga.menu(entityEvent).title('Historical events').icon('<span class="glyphicon glyphicon-file"></span>'))
-            .addChild(nga.menu(entityFact).title('Historical facts').icon('<span class="glyphicon glyphicon-file"></span>'))
-            .addChild(nga.menu(entityFigure).title('Historical figures').icon('<span class="glyphicon glyphicon-file"></span>'))
+            .addChild(nga.menu()
+                .title('Dashboard')
+                .icon('<span class="fa fa-home fa-fw"></span>')
+                .link('/dashboard')
+                .active(path => path.indexOf('/dashboard') === 0)
+            )
+            .addChild(nga.menu()
+                .title('Historical documents')
+                .icon('<span class="fa fa-th-list fa-fw"></span>')
+                .addChild(nga.menu(entityPeriod)
+                    .title('Historical periods')
+                    .icon('<span class="fa fa-sitemap fa-fw"></span>'))
+                .addChild(nga.menu(entityEvent)
+                    .title('Historical events')
+                    .icon('<span class="fa fa-tags fa-fw"></span>'))
+                .addChild(nga.menu(entityFact)
+                    .title('Historical facts')
+                    .icon('<span class="fa fa-photo fa-fw"></span>'))
+                .addChild(nga.menu(entityFigure)
+                    .title('Historical figures')
+                    .icon('<span class="fa fa-user fa-fw"></span>'))
+            )
+            .addChild(nga.menu()
+                .title('Configuration')
+                .icon('<span class="fa fa-cog fa-fw"></span>')
+                .link('/settings')
+                .active(path => path.indexOf('/settings') === 0)
+            )
+        );
+
+        admin.dashboard(nga.dashboard()
+            .addCollection(nga.collection(admin.getEntity('periods'))
+                .name('latest_periods')
+                .title('Latest periods')
+                //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
+                .fields([
+                    nga.field('i', 'template')
+                        .label('')
+                        .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/120/90"></div>'),
+                    nga.field('title').isDetailLink(true).label(''),
+                ])
+                .sortField('date')
+                .sortDir('ASC')
+                .perPage(5)
+            )
+            .addCollection(nga.collection(admin.getEntity('facts'))
+                .name('latest_facts')
+                .title('Latest facts')
+                //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
+                .fields([
+                    nga.field('i', 'template')
+                        .label('')
+                        .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/120/90"></div>'),
+                    nga.field('name').isDetailLink(true).label(''),
+                ])
+                .sortField('date')
+                .sortDir('ASC')
+                .perPage(5)
+            )
+            .addCollection(nga.collection(admin.getEntity('figures'))
+                .name('latest_figures')
+                .title('Latest figures')
+                //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
+                .fields([
+                    nga.field('i', 'template')
+                        .label('')
+                        .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/120/90"></div>'),
+                    nga.field('name').isDetailLink(true).label(''),
+                ])
+                .sortField('date')
+                .sortDir('ASC')
+                .perPage(5)
+            )
+            .template(`
+<div class="row dashboard-starter"></div>
+<dashboard-summary></dashboard-summary>
+<div class="row dashboard-content">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <ma-dashboard-panel collection="dashboardController.collections.latest_facts" entries="dashboardController.entries.latest_facts" datastore="dashboardController.datastore"></ma-dashboard-panel>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <ma-dashboard-panel collection="dashboardController.collections.latest_figures" entries="dashboardController.entries.latest_figures" datastore="dashboardController.datastore"></ma-dashboard-panel>
+        </div>
+    </div>
+</div>
+<div class="row dashboard-content">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <ma-dashboard-panel collection="dashboardController.collections.latest_periods" entries="dashboardController.entries.latest_periods" datastore="dashboardController.datastore"></ma-dashboard-panel>
+        </div>
+    </div>
+</div>
+`)
         );
 
         nga.configure(admin);
