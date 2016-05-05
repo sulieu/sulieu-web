@@ -17,12 +17,12 @@
     "devebot-server"
   ],
   "dependencies": {
-    "app-armor": "^0.1.2",
+    "app-armor": "^0.1.3-alpha.1",
     "app-databoard": "^0.1.3",
     "app-datamodel": "^0.1.0",
     "app-filestore": "^0.1.1",
     "app-localization": "^0.1.1",
-    "app-timeline": "^0.1.3-alpha.2",
+    "app-timeline": "^0.1.3-alpha.4",
     "app-webfonts": "^0.1.2",
     "app-webproxy": "^0.1.1",
     "app-webserver": "^0.1.5",

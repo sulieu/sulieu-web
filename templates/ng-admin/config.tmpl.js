@@ -89,6 +89,7 @@
             'STATE_CHANGE_ERROR': 'Erreur de routage: {{ message }}',
             'NOT_FOUND': 'Không tìm thấy',
             'NOT_FOUND_DETAILS': 'Không tìm thấy trang mong muốn. Vui lòng thử lại sau một vài giây.',
+            'SUVIET.NET Dashboard': 'Trang sử Việt: Theo dòng lịch sử',
             'Dashboard': 'Bảng điều khiển',
             "Historical documents": "Tư liệu lịch sử",
             'Historical periods': 'Thời kỳ lịch sử',
@@ -661,9 +662,21 @@
             '</button>' +
             '<a class="navbar-brand" href="#" ng-click="appController.displayHome()">{{ "SUVIET.NET Dashboard" | translate }}</a>' +
         '</div>' +
-        '<p class="navbar-text navbar-right hidden-xs">' +
-            '<a href="https://github.com/suviet/suviet-web.git"><span class="glyphicon glyphicon-sunglasses"></span>&nbsp;View Source</a>' +
-        '</p>';
+        '<ul class="nav navbar-top-links navbar-right hidden-xs">' +
+            '<li>' +
+                '<a href="https://github.com/sulieu/sulieu-web">' +
+                    '<i class="fa fa-github fa-lg"></i>&nbsp;Source' +
+                '</a>' +
+            '</li>' +
+            '<li uib-dropdown ng-controller="HeaderCtrl">' +
+                '<a uib-dropdown-toggle href="#" aria-expanded="true">' +
+                    '<i class="fa fa-user fa-lg"></i>&nbsp;{{ username }}&nbsp;<i class="fa fa-caret-down"></i>' +
+                '</a>' +
+                '<ul class="dropdown-menu dropdown-user" role="menu">' +
+                    '<li><a href="#" ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>' +
+                '</ul>' +
+            '</li>' +
+        '</ul>';
         admin.header(customHeaderTemplate);
 
         var customMenuTemplate = 
@@ -794,4 +807,15 @@
         nga.configure(admin);
     }]);
 
+    app.controller('HeaderCtrl', ['$scope', '$location', '$http', function ($scope, $location, $http) {
+        function redirect(url) {
+            url = url || '/';
+            $location.path(url);
+        }
+        $scope.logout = function() {
+            $http.get('/logout').then(function() {
+                redirect();
+            });
+        };
+    }]);
 }());
