@@ -1,12 +1,12 @@
 {
-  "name": "suviet-web",
+  "name": "sulieu-web",
   "version": "0.1.0",
-  "description": "suviet.net - main application",
+  "description": "sulieu.net - history timeline application",
   "homepage": "https://suviet.net",
   "author": {
     "name": "suvietteam",
     "email": "contact@suviet.net",
-    "url": "https://about.suviet.net"
+    "url": "https://suviet.slack.com"
   },
   "main": "app.js",
   "engines": {
@@ -22,7 +22,7 @@
     "app-datamodel": "^0.1.0",
     "app-filestore": "^0.1.1",
     "app-localization": "^0.1.1",
-    "app-timeline": "^0.1.3-alpha.4",
+    "app-timeline": "^0.1.3-alpha.5",
     "app-webfonts": "^0.1.2",
     "app-webproxy": "^0.1.1",
     "app-webserver": "^0.1.5",
