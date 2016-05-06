@@ -9,9 +9,9 @@ module.exports = {
           mongodb: {
             uri: 'mongodb://localhost:27017/suviet-skywall'
           },
-          companyName: process.env.COMPANY_NAME || 'suviet.xyz',
-          projectName: process.env.PROJECT_NAME || 'suviet.xyz',
-          systemEmail: 'contact@suviet.xyz',
+          companyName: process.env.COMPANY_NAME || 'suviet.net',
+          projectName: process.env.PROJECT_NAME || 'suviet.net',
+          systemEmail: 'contact@suviet.net',
           smtp: {
             from: {
               name: process.env.SMTP_FROM_NAME || 'Devebot Project',

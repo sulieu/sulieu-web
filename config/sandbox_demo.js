@@ -5,7 +5,7 @@ module.exports = {
         connection_options: {
           host: '127.0.0.1',
           port: '27017',
-          name: 'suviet_demo'
+          name: 'suviet-timeline'
         }
       }
     },
@@ -14,7 +14,7 @@ module.exports = {
         connection_options: {
           host: '127.0.0.1',
           port: '27017',
-          name: 'suviet_demo'
+          name: 'suviet-timeline'
         }
       }
     }
