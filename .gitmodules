@@ -1,0 +1,4 @@
+[submodule "data"]
+	path = data
+	url = https://github.com/sulieu/sulieu-demo.git
+	branch = master
