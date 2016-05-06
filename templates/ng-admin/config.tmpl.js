@@ -115,10 +115,6 @@
                         "deletion": {
                             "title": 'Xóa thời kỳ: {{name}}'
                         }
-                    },
-                    "fields": {
-                        "title": "Tieu de",
-                        "description": "Mo ta"
                     }
                 },
                 "events": {
@@ -214,13 +210,13 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ stats.periods | number:0 }}</div>
-                        <div>Thời kỳ</div>
+                        <div><%- __("Historical Periods") %></div>
                     </div>
                 </div>
             </div>
             <a ui-sref="list({entity:'periods'})">
                 <div class="panel-footer">
-                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-left"><%- __("View details") %></span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -237,13 +233,13 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ stats.events | number:0 }}</div>
-                        <div>Dấu mốc</div>
+                        <div><%- __("Historical Events") %></div>
                     </div>
                 </div>
             </div>
             <a ui-sref="list({entity:'events'})">
                 <div class="panel-footer">
-                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-left"><%- __("View details") %></span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -259,13 +255,13 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ stats.facts | number:0 }}</div>
-                        <div>Sự kiện</div>
+                        <div><%- __("Historical Facts") %></div>
                     </div>
                 </div>
             </div>
             <a ui-sref="list({entity:'facts'})">
                 <div class="panel-footer">
-                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-left"><%- __("View details") %></span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -281,13 +277,13 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ stats.figures | number:0 }}</div>
-                        <div>Nhân vật</div>
+                        <div><%- __("Historical Figures") %></div>
                     </div>
                 </div>
             </div>
             <a ui-sref="list({entity:'figures'})">
                 <div class="panel-footer">
-                    <span class="pull-left">Danh sách</span>
+                    <span class="pull-left"><%- __("View details") %></span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -310,7 +306,7 @@
             return value.length > 50 ? value.substr(0, 50) + '...' : value;
         }
 
-        var admin = nga.application("Suviet Dashboard") // application main title
+        var admin = nga.application('<%- __("Suviet Dashboard") %>') // application main title
             .debug(true) // debug disabled
             .baseApiUrl('/dong-thoi-gian/rest/'); // main API endpoint
 
@@ -345,16 +341,19 @@
                 nga.field('i', 'template')
                     .label('')
                     .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/200/150"></div>'),
-                nga.field('title'),
-                nga.field('period'),
+                nga.field('title')
+                    .label('<%- __("Period Title") %>'),
+                nga.field('period')
+                    .label('<%- __("Period Time Range") %>'),
                 nga.field('description', 'wysiwyg')
+                    .label('<%- __("Period Description") %>')
             ])
             .perPage(10)
             .sortField('start_year')
             .sortDir('asc')
             .filters([
                 nga.field('q')
-                    .label('Filter by title')
+                    .label('<%- __("Filter by title") %>')
             ])
             .listActions(['show', 'edit', 'delete'])
             .entryCssClasses(function(entry) { // set row class according to entry
@@ -365,17 +364,24 @@
             .title('{{ "Entities.periods.forms.creation.title" | translate }}')
             .fields([
                 nga.field('title')
+                    .label('<%- __("Period Title") %>')
                     .attributes({ placeholder: 'the period title' })
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
-                nga.field('description', 'wysiwyg'),
+                nga.field('description', 'wysiwyg')
+                    .label('<%- __("Period Description") %>'),
                 nga.field('slug')
+                    .label('<%- __("Period Slug") %>')
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
                 nga.field('start_year', 'number')
+                    .label('<%- __("Period Start Year") %>')
                     .validation({ required: true }),
                 nga.field('end_year', 'number')
+                    .label('<%- __("Period End Year") %>')
                     .validation({ required: true }),
-                nga.field('period'),
+                nga.field('period')
+                    .label('<%- __("Period Time Range") %>'),
                 nga.field('picture', 'file')
+                    .label('<%- __("Period Picture") %>')
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
@@ -392,10 +398,14 @@
         entityPeriod.showView()
             .title('{{ "Entities.periods.forms.show.title" | translate: {name: entry.values.title} }}')
             .fields([
-                nga.field('title'),
-                nga.field('description'),
-                nga.field('slug'),
-                nga.field('period'),
+                nga.field('title')
+                    .label('<%- __("Period Title") %>'),
+                nga.field('description')
+                    .label('<%- __("Period Description") %>'),
+                nga.field('slug')
+                    .label('<%- __("Period Slug") %>'),
+                nga.field('period')
+                    .label('<%- __("Period Time Range") %>'),
                 nga.field('preview', 'template')
                     .label('')
                     .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
@@ -412,14 +422,16 @@
             .infinitePagination(true)
             .fields([
                 nga.field('image', 'template')
-                .label('')
-                .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/200/150"></div>'),
-                nga.field('headline'),
+                    .label('')
+                    .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/200/150"></div>'),
+                nga.field('headline')
+                    .label('<%- __("Event Headline") %>'),
                 nga.field('text', 'wysiwyg')
+                    .label('<%- __("Event Text") %>')
             ])
             .filters([
                 nga.field('q')
-                    .label('Filter by title')
+                    .label('<%- __("Filter by title") %>')
             ])
             .listActions(['show', 'edit', 'delete'])
             .entryCssClasses(function(entry) {
@@ -430,14 +442,20 @@
             .title('{{ "Entities.events.forms.creation.title" | translate }}')
             .fields([
                 nga.field('headline')
+                    .label('<%- __("Event Headline") %>')
                     .attributes({ placeholder: 'the event headline' })
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
-                nga.field('text', 'wysiwyg'),
+                nga.field('text', 'wysiwyg')
+                    .label('<%- __("Event Text") %>'),
                 nga.field('start_date')
+                    .label('<%- __("Event Start Date") %>')
                     .validation({ required: true, minlength: 1 }),
-                nga.field('end_date'),
-                nga.field('display_date'),
+                nga.field('end_date')
+                    .label('<%- __("Event End Date") %>'),
+                nga.field('display_date')
+                    .label('<%- __("Event Display Date") %>'),
                 nga.field('image', 'file')
+                    .label('<%- __("Event Image") %>')
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
@@ -454,11 +472,16 @@
         entityEvent.showView()
             .title('{{ "Entities.events.forms.show.title" | translate: {name: entry.values.headline} }}')
             .fields([
-                nga.field('headline'),
-                nga.field('text', 'wysiwyg'),
-                nga.field('start_date'),
-                nga.field('end_date'),
-                nga.field('display_date'),
+                nga.field('headline')
+                    .label('<%- __("Event Headline") %>'),
+                nga.field('text', 'wysiwyg')
+                    .label('<%- __("Event Text") %>'),
+                nga.field('start_date')
+                    .label('<%- __("Event Start Date") %>'),
+                nga.field('end_date')
+                    .label('<%- __("Event End Date") %>'),
+                nga.field('display_date')
+                    .label('<%- __("Event Display Date") %>'),
                 nga.field('preview', 'template')
                     .label('')
                     .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">')
@@ -477,18 +500,20 @@
                 nga.field('i', 'template')
                     .label('')
                     .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture}}/200/150"></div>'),
-                nga.field('name'),
-                nga.field('description', 'wysiwyg'),
+                nga.field('name')
+                    .label('<%- __("Fact Name") %>'),
+                nga.field('description', 'wysiwyg')
+                    .label('<%- __("Fact Description") %>'),
                 nga.field('periodId', 'reference')
-                    .label('Period')
+                    .label('<%- __("Fact Period") %>')
                     .targetEntity(admin.getEntity('periods'))
                     .targetField(nga.field('title'))
             ])
             .filters([
                 nga.field('name')
-                    .label('Filter by name'),
+                    .label('<%- __("Filter by name") %>'),
                 nga.field('periodId', 'reference')
-                    .label('Filter by Period')
+                    .label('<%- __("Filter by period") %>')
                     .targetEntity(entityPeriod)
                     .targetField(nga.field('title'))
                     .remoteComplete(true, {
@@ -505,18 +530,22 @@
             .title('{{ "Entities.facts.forms.creation.title" | translate }}')
             .fields([
                 nga.field('name')
+                    .label('<%- __("Fact Name") %>')
                     .attributes({ placeholder: 'the fact name' })
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
-                nga.field('description', 'wysiwyg'),
+                nga.field('description', 'wysiwyg')
+                    .label('<%- __("Fact Description") %>'),
                 nga.field('slug')
+                    .label('<%- __("Fact Slug") %>')
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
                 nga.field('periodId', 'reference')
-                    .label('Period')
+                    .label('<%- __("Fact Period") %>')
                     .targetEntity(admin.getEntity('periods'))
                     .targetField(nga.field('title'))
                     .validation({required: true })
                     .cssClasses('col-sm-4'),
                 nga.field('events', 'reference_many')
+                    .label('<%- __("Fact Events") %>')
                     .targetEntity(entityEvent)
                     .targetField(nga.field('headline'))
                     .attributes({ placeholder: 'Select some events ...' })
@@ -526,6 +555,7 @@
                     })
                     .singleApiCall(ids => { return {'id': ids }; }),
                 nga.field('picture', 'file')
+                    .label('<%- __("Fact Picture") %>')
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
@@ -542,11 +572,14 @@
         entityFact.showView()
             .title('{{ "Entities.facts.forms.edition.title" | translate: {name: entry.values.name} }}')
             .fields([
-                nga.field('name'),
-                nga.field('description'),
-                nga.field('slug'),
+                nga.field('name')
+                    .label('<%- __("Fact Name") %>'),
+                nga.field('description')
+                    .label('<%- __("Fact Description") %>'),
+                nga.field('slug')
+                    .label('<%- __("Fact Slug") %>'),
                 nga.field('periodId', 'reference')
-                    .label('Period')
+                    .label('<%- __("Fact Period") %>')
                     .targetEntity(admin.getEntity('periods'))
                     .targetField(nga.field('title'))
                     .editable(false),
@@ -568,18 +601,20 @@
                 nga.field('i', 'template')
                     .label('')
                     .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture}}/200/150"></div>'),
-                nga.field('name'),
-                nga.field('description', 'wysiwyg'),
+                nga.field('name')
+                    .label('<%- __("Figure Name") %>'),
+                nga.field('description', 'wysiwyg')
+                    .label('<%- __("Figure Description") %>'),
                 nga.field('periodId', 'reference')
-                    .label('Period')
+                    .label('<%- __("Figure Period") %>')
                     .targetEntity(admin.getEntity('periods'))
                     .targetField(nga.field('title'))
             ])
             .filters([
                 nga.field('name')
-                    .label('Filter by name'),
+                    .label('<%- __("Filter by name") %>'),
                 nga.field('periodId', 'reference')
-                    .label('Filter by Period')
+                    .label('<%- __("Filter by period") %>')
                     .targetEntity(entityPeriod)
                     .targetField(nga.field('title'))
                     .remoteComplete(true, {
@@ -596,18 +631,22 @@
             .title('{{ "Entities.figures.forms.creation.title" | translate }}')
             .fields([
                 nga.field('name')
+                    .label('<%- __("Figure Name") %>')
                     .attributes({ placeholder: 'the figure name' })
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
-                nga.field('description', 'wysiwyg'),
+                nga.field('description', 'wysiwyg')
+                    .label('<%- __("Figure Description") %>'),
                 nga.field('slug')
+                    .label('<%- __("Figure Slug") %>')
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
                 nga.field('periodId', 'reference')
-                    .label('Period')
+                    .label('<%- __("Figure Period") %>')
                     .targetEntity(admin.getEntity('periods'))
                     .targetField(nga.field('title'))
                     .validation({required: true })
                     .cssClasses('col-sm-4'),
                 nga.field('events', 'reference_many')
+                    .label('<%- __("Figure Events") %>')
                     .targetEntity(entityEvent)
                     .targetField(nga.field('headline'))
                     .attributes({ placeholder: 'Select some events ...' })
@@ -617,6 +656,7 @@
                     })
                     .singleApiCall(ids => { return {'id': ids }; }),
                 nga.field('picture', 'file')
+                    .label('<%- __("Figure Picture") %>')
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
@@ -633,15 +673,19 @@
         entityFigure.showView() // a showView displays one entry in full page - allows to display more data than in a a list
             .title('{{ "Entities.figures.forms.show.title" | translate: {name: entry.values.name} }}')
             .fields([
-                nga.field('name'),
-                nga.field('description'),
-                nga.field('slug'),
+                nga.field('name')
+                    .label('<%- __("Figure Name") %>'),
+                nga.field('description')
+                    .label('<%- __("Figure Description") %>'),
+                nga.field('slug')
+                    .label('<%- __("Figure Slug") %>'),
                 nga.field('periodId', 'reference')
-                    .label('Period')
+                    .label('<%- __("Figure Period") %>')
                     .targetEntity(admin.getEntity('periods'))
                     .targetField(nga.field('title'))
                     .editable(false),
                 nga.field('events', 'reference_many')
+                    .label('<%- __("Figure Events") %>')
                     .targetEntity(entityEvent)
                     .targetField(nga.field('headline')),
                 nga.field('preview', 'template')
@@ -739,7 +783,7 @@
         admin.dashboard(nga.dashboard()
             .addCollection(nga.collection(admin.getEntity('periods'))
                 .name('latest_periods')
-                .title('Latest periods')
+                .title('<%- __("Latest Periods") %>')
                 //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
                 .fields([
                     nga.field('i', 'template')
@@ -753,7 +797,7 @@
             )
             .addCollection(nga.collection(admin.getEntity('facts'))
                 .name('latest_facts')
-                .title('Latest facts')
+                .title('<%- __("Latest Facts") %>')
                 //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
                 .fields([
                     nga.field('i', 'template')
@@ -767,7 +811,7 @@
             )
             .addCollection(nga.collection(admin.getEntity('figures'))
                 .name('latest_figures')
-                .title('Latest figures')
+                .title('<%- __("Latest Figures") %>')
                 //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
                 .fields([
                     nga.field('i', 'template')
