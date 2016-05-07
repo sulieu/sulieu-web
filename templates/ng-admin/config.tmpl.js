@@ -202,7 +202,7 @@
             }],
             template: `<div class="row">
     <div class="col-lg-3">
-        <div class="panel panel-primary">
+        <div class="panel panel-red">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
@@ -229,28 +229,6 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tags fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge">{{ stats.events | number:0 }}</div>
-                        <div><%- __("Historical Events") %></div>
-                    </div>
-                </div>
-            </div>
-            <a ui-sref="list({entity:'events'})">
-                <div class="panel-footer">
-                    <span class="pull-left"><%- __("View details") %></span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="panel panel-yellow">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
                         <i class="fa fa-photo fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
@@ -269,7 +247,7 @@
         </div>
     </div>
     <div class="col-lg-3">
-        <div class="panel panel-red">
+        <div class="panel panel-yellow">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
@@ -290,6 +268,28 @@
             </a>
         </div>
     </div>
+    <div class="col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tags fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ stats.events | number:0 }}</div>
+                        <div><%- __("Historical Events") %></div>
+                    </div>
+                </div>
+            </div>
+            <a ui-sref="list({entity:'events'})">
+                <div class="panel-footer">
+                    <span class="pull-left"><%- __("View details") %></span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>`
         };
     }]);
@@ -302,11 +302,16 @@
             if (!value) {
                 return '';
             }
-
             return value.length > 50 ? value.substr(0, 50) + '...' : value;
         }
 
-        var admin = nga.application('<%- __("Suviet Dashboard") %>') // application main title
+        var documentStates = [
+            { label: '<%- __("Document Active") %>', value: 'active' },
+            { label: '<%- __("Document Pending") %>', value: 'pending' },
+            { label: '<%- __("Document Removed") %>', value: 'removed' }
+        ];
+
+        var admin = nga.application('<%- __("Suviet Dashboard") %>')
             .debug(true) // debug disabled
             .baseApiUrl('/dong-thoi-gian/rest/'); // main API endpoint
 
@@ -336,6 +341,7 @@
          *****************************/
         entityPeriod.listView()
             .title('{{ "Entities.periods.forms.list.title" | translate }}')
+            .actions(['batch', 'filter', 'create'])
             .infinitePagination(true)
             .fields([
                 nga.field('i', 'template')
@@ -345,15 +351,17 @@
                     .label('<%- __("Period Title") %>'),
                 nga.field('period')
                     .label('<%- __("Period Time Range") %>'),
-                nga.field('description', 'wysiwyg')
-                    .label('<%- __("Period Description") %>')
+                nga.field('brief', 'text')
+                    .label('<%- __("Period Brief") %>')
             ])
             .perPage(10)
             .sortField('start_year')
             .sortDir('asc')
             .filters([
                 nga.field('q')
-                    .label('<%- __("Filter by title") %>')
+                    .label('<%- __("Filter by title") %>'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Filter by state") %>')
             ])
             .listActions(['show', 'edit', 'delete'])
             .entryCssClasses(function(entry) { // set row class according to entry
@@ -367,11 +375,14 @@
                     .label('<%- __("Period Title") %>')
                     .attributes({ placeholder: 'the period title' })
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
-                nga.field('description', 'wysiwyg')
-                    .label('<%- __("Period Description") %>'),
                 nga.field('slug')
                     .label('<%- __("Period Slug") %>')
                     .validation({ required: true, minlength: 3, maxlength: 100 }),
+                nga.field('brief', 'text')
+                    .label('<%- __("Period Brief") %>')
+                    .validation({ required: true, minlength: 10, maxlength: 800 }),
+                nga.field('description', 'wysiwyg')
+                    .label('<%- __("Period Description") %>'),
                 nga.field('start_year', 'number')
                     .label('<%- __("Period Start Year") %>')
                     .validation({ required: true }),
@@ -380,6 +391,9 @@
                     .validation({ required: true }),
                 nga.field('period')
                     .label('<%- __("Period Time Range") %>'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
+                    .defaultValue(documentStates[0]),
                 nga.field('picture', 'file')
                     .label('<%- __("Period Picture") %>')
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
@@ -400,14 +414,18 @@
             .fields([
                 nga.field('title')
                     .label('<%- __("Period Title") %>'),
-                nga.field('description')
-                    .label('<%- __("Period Description") %>'),
                 nga.field('slug')
                     .label('<%- __("Period Slug") %>'),
+                nga.field('brief')
+                    .label('<%- __("Period Brief") %>'),
+                nga.field('description')
+                    .label('<%- __("Period Description") %>'),
                 nga.field('period')
                     .label('<%- __("Period Time Range") %>'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>'),
                 nga.field('preview', 'template')
-                    .label('')
+                    .label('<%- __("Period Picture") %>')
                     .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
             ]);
 
@@ -419,6 +437,7 @@
          *****************************/
         entityEvent.listView()
             .title('{{ "Entities.events.forms.list.title" | translate }}')
+            .actions(['batch', 'filter', 'create'])
             .infinitePagination(true)
             .fields([
                 nga.field('image', 'template')
@@ -483,7 +502,7 @@
                 nga.field('display_date')
                     .label('<%- __("Event Display Date") %>'),
                 nga.field('preview', 'template')
-                    .label('')
+                    .label('<%- __("Event Image") %>')
                     .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">')
             ]);
 
@@ -495,6 +514,7 @@
          *****************************/
         entityFact.listView()
             .title('{{ "Entities.facts.forms.list.title" | translate }}')
+            .actions(['batch', 'filter', 'create'])
             .infinitePagination(true)
             .fields([
                 nga.field('i', 'template')
@@ -584,7 +604,7 @@
                     .targetField(nga.field('title'))
                     .editable(false),
                 nga.field('preview', 'template')
-                    .label('')
+                    .label('<%- __("Fact Picture") %>')
                     .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
             ]);
 
@@ -596,6 +616,7 @@
          *****************************/
         entityFigure.listView()
             .title('{{ "Entities.figures.forms.list.title" | translate }}')
+            .actions(['batch', 'filter', 'create'])
             .infinitePagination(true)
             .fields([
                 nga.field('i', 'template')
@@ -689,7 +710,7 @@
                     .targetEntity(entityEvent)
                     .targetField(nga.field('headline')),
                 nga.field('preview', 'template')
-                    .label('')
+                    .label('<%- __("Figure Picture") %>')
                     .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
             ]);
 
@@ -789,7 +810,11 @@
                     nga.field('i', 'template')
                         .label('')
                         .template('<div class="picture"><img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/120/90"></div>'),
-                    nga.field('title').isDetailLink(true).label(''),
+                    nga.field('title')
+                        .label('')
+                        .isDetailLink(true),
+                    nga.field('brief')
+                        .label(''),
                 ])
                 .sortField('date')
                 .sortDir('ASC')
@@ -828,19 +853,19 @@
 <dashboard-summary></dashboard-summary>
 <div class="row dashboard-content">
     <div class="col-lg-6">
-        <div class="panel panel-default">
+        <div class="panel panel-green">
             <ma-dashboard-panel collection="dashboardController.collections.latest_facts" entries="dashboardController.entries.latest_facts" datastore="dashboardController.datastore"></ma-dashboard-panel>
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="panel panel-default">
+        <div class="panel panel-yellow">
             <ma-dashboard-panel collection="dashboardController.collections.latest_figures" entries="dashboardController.entries.latest_figures" datastore="dashboardController.datastore"></ma-dashboard-panel>
         </div>
     </div>
 </div>
 <div class="row dashboard-content">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-red">
             <ma-dashboard-panel collection="dashboardController.collections.latest_periods" entries="dashboardController.entries.latest_periods" datastore="dashboardController.datastore"></ma-dashboard-panel>
         </div>
     </div>

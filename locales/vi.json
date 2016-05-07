@@ -27,8 +27,10 @@
 	"Filter by title": "Lọc theo tiêu đề",
 	"Filter by name": "Lọc theo tên",
 	"Filter by period": "Lọc theo thời kỳ",
+	"Filter by state": "Lọc theo trạng thái",
 	"Period Title": "Tiêu đề",
 	"Period Time Range": "Thời gian",
+	"Period Brief": "Tóm lược",
 	"Period Description": "Mô tả",
 	"Period Slug": "Tên thu gọn",
 	"Period Start Year": "Từ năm",
@@ -54,5 +56,9 @@
 	"Figure Picture": "Hình minh họa",
 	"Latest Periods": "THỜI KỲ NỔI BẬT",
 	"Latest Facts": "SỰ KIỆN NỔI BẬT",
-	"Latest Figures": "NHÂN VẬT NỔI BẬT"
+	"Latest Figures": "NHÂN VẬT NỔI BẬT",
+	"Document State": "Trạng thái",
+	"Document Active": "Hoạt động",
+	"Document Pending": "Tạm ngưng",
+	"Document Removed": "Loại bỏ"
 }
