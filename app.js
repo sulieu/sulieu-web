@@ -4,11 +4,7 @@ var app = require('devebot').launchApplication({
   appRootPath: __dirname
 }, [
   'app-armor', 
-  'app-databoard', 
-  'app-filestore', 
-  'app-localization', 
-  'app-timeline', 
-  'app-webproxy'
+  'app-timeline'
 ]);
 
 if (require.main === module) app.server.start();

@@ -57,9 +57,6 @@ module.exports = {
           homedir: "public/client/ng-admin-mock",
           templateFile: __dirname + '/../templates/ng-admin/config.tmpl.js'
         }
-      },
-      mappings: {
-
       }
     },
     appFilestore: {
@@ -73,18 +70,31 @@ module.exports = {
       }
     },
     appTimeline: {
-      contextPath: '/dong-thoi-gian'
-    },
-    appWebproxy: {
-      mappings: {
-        'rule1': {
-          source: {
-            url: '/(.*)'
-          },
-          target: {
-            hostname: 'vnexpress.net',
-            url: '/$1'
+      contextPath: '/dong-thoi-gian',
+      resources: {
+        period: {
+          slug: {
+            listpage: 'thoi-ky-lich-su',
+            itempage: 'thoi-ky'
           }
+        },
+        fact: {
+          slug: {
+            listpage: 'su-kien-lich-su',
+            itempage: 'su-kien'
+          }
+        },
+        figure: {
+          slug: {
+            listpage: 'nhan-vat-lich-su',
+            itempage: 'nhan-vat'
+          }
+        },
+        disclaimer: {
+          slug: 'phu-nhan-chung'
+        },
+        aboutus: {
+          slug: 've-chung-toi'
         }
       }
     },

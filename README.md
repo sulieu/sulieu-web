@@ -14,6 +14,7 @@ trọng trong lịch sử dựng nước và giữ nước của dân tộc ta.
 * Ví dụ về cách bố trí thông tin chi tiết nhân vật lịch sử: [trục thời gian theo chiều ngang](http://suviet.net/dong-thoi-gian/nhan-vat/ngo-quyen)
 
 Ứng dụng được triển khai thử nghiệm và liên tục cập nhật trên trang web [suviet.net](http://suviet.net/).
+Truy cập vào trang [quản lý ứng dụng](http://suviet.net/databoard) để biên tập và điều chỉnh nội dung.
 
 > Lưu ý: Trang web suviet.net chỉ mang tính minh họa cho chức năng của ứng dụng, mặc dù đã cố gắng hết sức
 > trong việc chọn lọc thông tin hiển thị, xong không thể tránh khỏi tất cả mọi vấn đề về bản quyền hoặc
@@ -43,6 +44,12 @@ Chuyển đến làm việc tại thư mục `sulieu-web` này:
 $ cd sulieu-web
 ```
 
+Tải dự án con chứa dữ liệu minh họa trong thư mục `./data`, bằng lệnh (lưu ý là vẫn ở nguyên trong thư mục `sulieu-web`):
+
+```
+$ git submodule update --init --recursive
+```
+
 Cài đặt các module Nodejs mà ứng dụng phụ thuộc bằng `npm`:
 
 ```
@@ -56,11 +63,16 @@ Dữ liệu dùng để chạy ứng dụng sulieu-web. Dữ liệu bao gồm 2 
 * Các tệp hình ảnh.
 * Dữ liệu xuất (dump) từ CSDL MongoDB.
 
-Khi clone mã nguồn sulieu-web, tất cả dữ liệu này đồng thời được tải luôn về thư mục
-`./data` của sulieu-web. Đối với các tệp hình ảnh, chúng ta không cần phải làm gì cả.
+Khi clone mã nguồn sulieu-web, chúng ta đã thực hiẹn tải tất cả dữ liệu này về thư mục con
+`./data` của `sulieu-web`. Đối với các tệp hình ảnh, chúng ta không cần phải làm gì cả.
 Đối với dữ liệu xuất từ MongoDB, chúng ta thực hiện `restore` trở lại theo các bước sau:
 
-Mở cửa sổ dòng lệnh (Terminal), chuyển vào làm việc trong thư mục `./data/mongodata`.
+Mở cửa sổ dòng lệnh (Terminal), chuyển vào làm việc trong thư mục `./data/mongodata`
+(giả sử là đang ở trong thư mục `sulieu-web`):
+
+```
+$ cd ./data/mongodata
+```
 
 Chạy các lệnh `mongorestore` để khôi phục dữ liệu vào mongodb:
 
@@ -77,9 +89,10 @@ $ mongo
 > db.figure.find()
 ```
 
-Nếu hiển thị danh sách các danh nhân lịch sử, có thể xem quá trình import thành công.
+Nếu hiển thị danh sách các danh nhân lịch sử, có thể xem quá trình import thành công. 
+Bấm tổ hợp phím `Ctrl+C` để thoát khỏi `mongo`.
 
-### Chạy ứng dụng 
+### Chạy ứng dụng
 
 Chạy ứng dụng `suviet-web`:
 

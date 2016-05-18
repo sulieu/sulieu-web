@@ -24,8 +24,6 @@ module.exports = {
       i18n: {
         autoReload: true
       }
-    },
-    appTimeline: {
     }
   }
 };
