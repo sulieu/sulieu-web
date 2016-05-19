@@ -3,6 +3,7 @@
 	"HISTORICAL TIMELINE": "TRANG SỬ VIỆT",
 	"Menu Title": "TRANG SỬ VIỆT",
 	"Menu Close": "Đóng",
+	"View Details": "Xem chi tiết",
 	"Historical documents": "Tư liệu lịch sử",
 	"Historical Periods": "Thời kỳ lịch sử",
 	"Historical Period": "Thời kỳ",
@@ -55,11 +56,12 @@
 	"Figure Slug": "Tên thu gọn",
 	"Figure Events": "Các dấu mốc",
 	"Figure Picture": "Hình minh họa",
+	"Latest Documents": "%s mới cập nhật",
 	"Latest Periods": "THỜI KỲ NỔI BẬT",
 	"Latest Facts": "SỰ KIỆN NỔI BẬT",
 	"Latest Figures": "NHÂN VẬT NỔI BẬT",
 	"Document State": "Trạng thái",
 	"Document Active": "Hoạt động",
-	"Document Pending": "Tạm ngưng",
+	"Document Pending": "Tạm dừng",
 	"Document Removed": "Loại bỏ"
 }

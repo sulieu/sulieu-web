@@ -20,6 +20,9 @@ module.exports = {
     }
   },
   plugins: {
+    appDataboard: {
+      contextPath: '/trang-bien-tap'
+    },
     appLocalization: {
       i18n: {
         autoReload: true

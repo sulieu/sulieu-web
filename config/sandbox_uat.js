@@ -3,7 +3,7 @@ module.exports = {
     filestoreMongodbWrapper: {
       mongodb: {
         connection_options: {
-          host: '172.31.34.60',
+          host: '127.0.0.1',
           port: '27017',
           name: 'suviet-timeline'
         }
@@ -12,7 +12,7 @@ module.exports = {
     timelineMongooseWrapper: {
       mongoose: {
         connection_options: {
-          host: '172.31.34.60',
+          host: '127.0.0.1',
           port: '27017',
           name: 'suviet-timeline'
         }
@@ -27,7 +27,7 @@ module.exports = {
           hostname: 'localhost',
           port: 7878,
           mongodb: {
-            uri: 'mongodb://172.31.34.60:27017/suviet-skywall'
+            uri: 'mongodb://127.0.0.1:27017/suviet-skywall'
           },
         }
       }
@@ -44,7 +44,7 @@ module.exports = {
       port: 7878,
       session: {
         mongodb: {
-          uri: 'mongodb://172.31.34.60:27017/suviet-session'
+          uri: 'mongodb://127.0.0.1:27017/suviet-session'
         }
       }
     }
