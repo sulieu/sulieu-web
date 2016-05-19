@@ -20,7 +20,7 @@ Truy cập vào trang [quản lý ứng dụng](http://suviet.net/databoard) đ�
 > trong việc chọn lọc thông tin hiển thị, xong không thể tránh khỏi tất cả mọi vấn đề về bản quyền hoặc
 > tính chính xác của dữ liệu. Nếu có dữ liệu nào vi phạm trong thời gian chạy thử, xin quý vị vui lòng 
 > gửi thư yêu cầu (dỡ bỏ nội dung) về địa chỉ: contact@suviet.net. Mọi thắc mắc về chính sách nội dung 
-> xin vui lòng xem trong trang [Phủ nhận chung](http://suviet.net/dong-thoi-gian/phu-nhan-chung).
+> xin vui lòng xem trong trang [Thông tin khác](http://suviet.net/dong-thoi-gian/thong-tin-khac).
 
 ## Dành cho nhà phát triển
 
@@ -29,6 +29,9 @@ chút thời gian quý báu tham gia đóng góp ý kiến, kiểm thử, cài �
 ứng dụng này. Phần nội dung dưới đây sẽ hướng dẫn tải mã nguồn bằng __git__ và cài đặt chạy ứng dụng. Chúng
 tôi giả định rằng các nhà phát triển đã biết về Node.js và cách thức quản lý dự án lập trình trên Node.js.
 Với những quý vị chưa tiếp cận Node.js bao giờ, vui lòng dành thời gian tham khảo trước các tài liệu.
+
+> Hiện tại chức năng thu phóng ảnh của ứng dụng đang sử dụng thư viện `imagemagick`, thư viện này hiện chỉ
+> được Node.js hỗ trợ Linux và MacOS, do đó, Windows tạm thời không dùng được với ứng dụng này.
 
 ### Tải mã nguồn phần mềm
 
@@ -56,6 +59,12 @@ Cài đặt các module Nodejs mà ứng dụng phụ thuộc bằng `npm`:
 $ npm install
 ```
 
+Cài đặt thư viện `imagemagick` (trên Ubuntu):
+
+```
+$ sudo apt-get install imagemagick
+```
+
 ### Cấu hình cơ sở dữ liệu
 
 Dữ liệu dùng để chạy ứng dụng sulieu-web. Dữ liệu bao gồm 2 loại:
@@ -74,7 +83,15 @@ Mở cửa sổ dòng lệnh (Terminal), chuyển vào làm việc trong thư m�
 $ cd ./data/mongodata
 ```
 
-Chạy các lệnh `mongorestore` để khôi phục dữ liệu vào mongodb:
+Nếu cơ sở dữ liệu MongoDB của bạn đã có cơ sở dữ liệu `suviet-timeline` và `suviet-skywall` cũ,
+bạn có thể xóa các cơ sở dữ liệu này bằng các lệnh sau:
+
+```bash
+mongo suviet-timeline --eval "db.dropDatabase()"
+mongo suviet-skywall --eval "db.dropDatabase()"
+```
+
+Chạy các lệnh `mongorestore` để khôi phục dữ liệu từ thư mục `./data/mongodata` vào MongoDB:
 
 ```bash
 mongorestore -d suviet-timeline ./suviet-timeline

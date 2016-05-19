@@ -90,11 +90,8 @@ module.exports = {
             itempage: 'nhan-vat'
           }
         },
-        disclaimer: {
-          slug: 'phu-nhan-chung'
-        },
-        aboutus: {
-          slug: 've-chung-toi'
+        otherinfo: {
+          slug: 'thong-tin-khac'
         }
       }
     },

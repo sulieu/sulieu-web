@@ -3,6 +3,7 @@
 	"HISTORICAL TIMELINE": "HISTORYLINES",
 	"Menu Title": "Title",
 	"Menu Close": "Close",
+	"View Details": "View Details",
 	"Historical documents": "Historical Documents",
 	"Historical Periods": "Historical Periods",
 	"Historical Period": "Period",
@@ -55,11 +56,13 @@
 	"Figure Slug": "Slug",
 	"Figure Events": "Events",
 	"Figure Picture": "Picture",
+	"Latest Documents": "Latest %s",
 	"Latest Periods": "LATEST PERIODS",
 	"Latest Facts": "LATEST FACTS",
 	"Latest Figures": "LATEST FIGURES",
 	"Document State": "State",
 	"Document Active": "Active",
 	"Document Pending": "Pending",
-	"Document Removed": "Removed"
+	"Document Removed": "Removed",
+	"Other Information": "Other Information"
 }

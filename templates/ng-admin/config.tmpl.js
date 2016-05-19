@@ -352,7 +352,9 @@
                 nga.field('period')
                     .label('<%- __("Period Time Range") %>'),
                 nga.field('brief', 'text')
-                    .label('<%- __("Period Brief") %>')
+                    .label('<%- __("Period Brief") %>'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
             ])
             .perPage(10)
             .sortField('start_year')
@@ -391,15 +393,15 @@
                     .validation({ required: true }),
                 nga.field('period')
                     .label('<%- __("Period Time Range") %>'),
-                nga.field('state', 'choice').choices(documentStates)
-                    .label('<%- __("Document State") %>')
-                    .defaultValue(documentStates[0]),
                 nga.field('picture', 'file')
                     .label('<%- __("Period Picture") %>')
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
-                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
+                    .defaultValue(documentStates[0])
             ]);
 
         entityPeriod.editionView()
@@ -446,7 +448,9 @@
                 nga.field('headline')
                     .label('<%- __("Event Headline") %>'),
                 nga.field('text', 'wysiwyg')
-                    .label('<%- __("Event Text") %>')
+                    .label('<%- __("Event Text") %>'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
             ])
             .filters([
                 nga.field('q')
@@ -478,7 +482,10 @@
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
-                    .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">')
+                    .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
+                    .defaultValue(documentStates[0])
             ]);
 
         entityEvent.editionView()
@@ -503,7 +510,9 @@
                     .label('<%- __("Event Display Date") %>'),
                 nga.field('preview', 'template')
                     .label('<%- __("Event Image") %>')
-                    .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">')
+                    .template('<img src="/filestore/picture/{{ entry.values.image || \'unknown\' }}/512/390/preview.png">'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
             ]);
 
         entityEvent.deletionView()
@@ -527,7 +536,9 @@
                 nga.field('periodId', 'reference')
                     .label('<%- __("Fact Period") %>')
                     .targetEntity(admin.getEntity('periods'))
-                    .targetField(nga.field('title'))
+                    .targetField(nga.field('title')),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
             ])
             .filters([
                 nga.field('name')
@@ -579,7 +590,10 @@
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
-                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
+                    .defaultValue(documentStates[0])
             ]);
 
         entityFact.editionView()
@@ -605,7 +619,9 @@
                     .editable(false),
                 nga.field('preview', 'template')
                     .label('<%- __("Fact Picture") %>')
-                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
             ]);
 
         entityFact.deletionView()
@@ -629,7 +645,9 @@
                 nga.field('periodId', 'reference')
                     .label('<%- __("Figure Period") %>')
                     .targetEntity(admin.getEntity('periods'))
-                    .targetField(nga.field('title'))
+                    .targetField(nga.field('title')),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
             ])
             .filters([
                 nga.field('name')
@@ -681,7 +699,10 @@
                     .uploadInformation({ 'url': '/filestore/upload', 'apifilename': 'fileId' }),
                 nga.field('preview', 'template')
                     .label('')
-                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
+                    .defaultValue(documentStates[0])
             ]);
 
         entityFigure.editionView()
@@ -711,7 +732,9 @@
                     .targetField(nga.field('headline')),
                 nga.field('preview', 'template')
                     .label('<%- __("Figure Picture") %>')
-                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">')
+                    .template('<img src="/filestore/picture/{{ entry.values.picture || \'unknown\' }}/512/390/preview.png">'),
+                nga.field('state', 'choice').choices(documentStates)
+                    .label('<%- __("Document State") %>')
             ]);
 
         entityFigure.deletionView()
@@ -804,7 +827,7 @@
         admin.dashboard(nga.dashboard()
             .addCollection(nga.collection(admin.getEntity('periods'))
                 .name('latest_periods')
-                .title('<%- __("Latest Periods") %>')
+                .title('<%- __("Latest Documents", __("Historical Periods")).toUpperCase() %>')
                 //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
                 .fields([
                     nga.field('i', 'template')
@@ -822,7 +845,7 @@
             )
             .addCollection(nga.collection(admin.getEntity('facts'))
                 .name('latest_facts')
-                .title('<%- __("Latest Facts") %>')
+                .title('<%- __("Latest Documents", __("Historical Facts")).toUpperCase() %>')
                 //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
                 .fields([
                     nga.field('i', 'template')
@@ -836,7 +859,7 @@
             )
             .addCollection(nga.collection(admin.getEntity('figures'))
                 .name('latest_figures')
-                .title('<%- __("Latest Figures") %>')
+                .title('<%- __("Latest Documents", __("Historical Figures")).toUpperCase() %>')
                 //.permanentFilters({ date: { gte: moment().substract(1, 'months').toDate() } })
                 .fields([
                     nga.field('i', 'template')
