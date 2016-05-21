@@ -22,11 +22,7 @@
     "app-datamodel": "^0.1.0",
     "app-filestore": "^0.1.1",
     "app-localization": "^0.1.3",
-<<<<<<< HEAD
-    "app-timeline": "^0.1.3-alpha.8",
-=======
-    "app-timeline": "^0.1.3-alpha.7",
->>>>>>> 8bd09c65d2d8b220d3c7736acf6e9045584b86ea
+    "app-timeline": "^0.1.3-alpha.9",
     "app-webfonts": "^0.1.2",
     "app-webserver": "^0.1.6",
     "devebot": "^0.1.21",
